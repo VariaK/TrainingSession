@@ -1,7 +1,7 @@
 
 namespace SimpleNotificationSystem
 {
-    internal class User
+    internal class User:IComparable<User>
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -27,6 +27,10 @@ namespace SimpleNotificationSystem
         public override string ToString()
         {
             return $"Name: {Name} | Email: {Email} | Phone: {PhoneNumber}";
+        }
+        public int CompareTo(User other)
+        {
+            return this.Name.CompareTo(other.Name);
         }
     }
 }

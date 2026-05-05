@@ -21,27 +21,27 @@ namespace SimpleNotificationSystem
                 Console.WriteLine("Enter 5 to Delete a user");
                 Console.WriteLine("Enter 6 to exit registration portal");
                 Console.WriteLine("Please enter choice:");
-                
+
                 int choice;
                 while (!int.TryParse(Console.ReadLine(), out choice))
                 {
                     Console.WriteLine("Invalid input. Please enter a valid number:");
                 }
-                
-                switch(choice)
+
+                switch (choice)
                 {
                     case 1:
-                    Console.WriteLine("\n-------- Register ------");
+                        Console.WriteLine("\n-------- Register ------");
                         User newUser = new User();
                         newUsrRepo.Create(newUser);
                         Console.WriteLine("----- New User Registered ----");
                         break;
-                    
+
                     case 2:
                         Console.WriteLine("\n-----Update phone number---");
                         Console.WriteLine("Please enter old phone number:");
                         string OldNumber = Console.ReadLine() ?? string.Empty;
-                        if(newUsrRepo.GetDetails(OldNumber) == null)
+                        if (newUsrRepo.GetDetails(OldNumber) == null)
                         {
                             Console.WriteLine("Phone number not Registered");
                         }
@@ -52,35 +52,36 @@ namespace SimpleNotificationSystem
                             Console.WriteLine("User updated successfully");
                         }
                         break;
-                    
-                    case 3:
-                    Console.WriteLine("\n-----View Details ----");
-                    Console.WriteLine("Please enter phone number to view details:");
-                    string viewNum = Console.ReadLine() ?? string.Empty;
 
-                    User? viewUser = newUsrRepo.GetDetails(viewNum);
-                    if(viewUser == null)
-                    {
-                        Console.WriteLine("Phone number is not Registered");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"\n{viewUser}\n");
-                    }
-                    break;
+                    case 3:
+                        Console.WriteLine("\n-----View Details ----");
+                        Console.WriteLine("Please enter phone number to view details:");
+                        string viewNum = Console.ReadLine() ?? string.Empty;
+
+                        User? viewUser = newUsrRepo.GetDetails(viewNum);
+                        if (viewUser == null)
+                        {
+                            Console.WriteLine("Phone number is not Registered");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"\n{viewUser}\n");
+                        }
+                        break;
 
                     case 4:
-                    Console.WriteLine("\n----Show Details of all Users----");
-                    var allUsers = newUsrRepo.GetAll();
-                    if (allUsers.Count == 0)
-                    {
-                        Console.WriteLine("No users registered yet.");
-                    }
-                    foreach(var u in allUsers)
-                    {
-                        Console.WriteLine(u);
-                    }
-                    break;
+                        Console.WriteLine("\n----Show Details of all Users----");
+                        var allUsers = newUsrRepo.GetAll();
+                        if (allUsers.Count == 0)
+                        {
+                            Console.WriteLine("No users registered yet.");
+                        }
+                        allUsers.Sort();
+                        foreach (var u in allUsers)
+                        {
+                            Console.WriteLine(u);
+                        }
+                        break;
 
                     case 5:
                         Console.WriteLine("\n---- Delete a user ----");
@@ -98,21 +99,21 @@ namespace SimpleNotificationSystem
                         }
                         break;
 
-                    case 6: 
+                    case 6:
                         flag = false;
                         Console.WriteLine("\n----Exiting Registration Portal---");
                         break;
                 }
-                
+
             }
             User? user = null;
             Console.WriteLine("\n\n =======Notification Portal:=============");
-            while(user == null)
+            while (user == null)
             {
                 Console.WriteLine("Enter your phone number to login and send notifications:");
                 string usrPhno = Console.ReadLine() ?? string.Empty;
                 user = newUsrRepo.GetDetails(usrPhno);
-                if(user == null)
+                if (user == null)
                     Console.WriteLine("Phone number not registered.");
             }
 
