@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SNSBusinessLayer/SNSBusinessLayer.csproj" />
+  <Project Path="SNSDataAccessLayer/SNSDataAccessLayer.csproj" />
+  <Project Path="SNSModels/SNSModels.csproj" />
+  <Project Path="SNSPresentation/SNSPresentation.csproj" />
+</Solution>
