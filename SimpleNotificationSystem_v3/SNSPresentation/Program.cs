@@ -4,17 +4,16 @@ using SNSBusinessLayer.Services;
 using SNSBusinessLayer.Validation;
 using SNSDataAccessLayer;
 using SNSModels;
+using Npgsql;
+using System.Net.NetworkInformation;
 
 namespace SNSPresentation
 {
-    static class Program
+    internal class Program
     {
-        public static void Main()
+
+        private User Registration()
         {
-            Console.WriteLine("\n\n ----------- Welcome to Notification Service -----------\n");
-
-
-
             User user = new User();
             try
             {
@@ -38,15 +37,19 @@ namespace SNSPresentation
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nRegistration Successful!");
                 Console.ResetColor();
-
+                return user;
             }
             catch (InvalidException ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n Error: {ex.Message}");
                 Console.ResetColor();
-                return;
+                return null;
             }
+        }
+
+        private void NotificationPortal(User user)
+        {
 
             NotificationValidation notificationValidation = new NotificationValidation();
             NotificationService service = SNSBusinessLayer.ServiceFactory.CreateNotificationService();
@@ -168,7 +171,7 @@ namespace SNSPresentation
 
                     case 3:
 
-                        service.DisplayNotifications();
+                        service.DisplayNotifications(user);
 
                         break;
 
@@ -190,6 +193,20 @@ namespace SNSPresentation
                         break;
                 }
             }
+        }
+
+        public static void Main()
+        {
+            Program prgm = new Program();
+
+            Console.WriteLine("\n\n ----------- Welcome to Notification Service -----------\n");
+            User user = prgm.Registration();
+            if (user == null)
+            {
+                return;
+            }
+
+            prgm.NotificationPortal(user);
         }
     }
 }

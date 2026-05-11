@@ -64,10 +64,10 @@ namespace SNSBusinessLayer.Services
             );
         }
 
-        public void DisplayNotifications()
+        public void DisplayNotifications(User user)
         {
             var notifications =
-                repository.GetAllNotifications();
+                repository.GetAllNotifications(user);
 
             Console.WriteLine("\n===== Sent Notifications =====");
             if (notifications.Count == 0)
