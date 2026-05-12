@@ -9,13 +9,16 @@ namespace wordGuessingGame.Services
         private readonly GuessValidator _validator;
         private readonly FeedbackGenerator _feedbackGenerator;
 
+        private readonly string _username;
+
         private int _score = 0;
 
-        public Game(IWordProvider wordProvider)
+        public Game(IWordProvider wordProvider, string username)
         {
             _wordProvider = wordProvider;
             _validator = new GuessValidator();
             _feedbackGenerator = new FeedbackGenerator();
+            _username = username;
         }
 
         public void Play()
@@ -24,7 +27,7 @@ namespace wordGuessingGame.Services
 
             List<string> previousGuesses = [];
 
-            Console.WriteLine("\n===== WORDLE =====");
+            Console.WriteLine("\n\t===== WORDLE =====");
             Console.WriteLine("Guess the hidden 5-letter word.");
             Console.WriteLine();
 
@@ -52,15 +55,17 @@ namespace wordGuessingGame.Services
 
                     if (guess == hiddenWord)
                     {
-
-                        Console.WriteLine("Congratulations! You guessed the word!");
-
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\n Congratulations! You guessed the word!");
+                        Console.ResetColor();
                         DisplayComment(attempt);
 
                         _score += (7 - attempt) * 10;
-
+                        UserRepository repo = new UserRepository();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"Score: {_score}");
-
+                        Console.ResetColor();
+                        repo.UpdateScore(_username, _score);
                         return;
                     }
                 }
