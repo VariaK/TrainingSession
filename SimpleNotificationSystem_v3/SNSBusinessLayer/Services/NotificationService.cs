@@ -1,20 +1,19 @@
 using SNSBusinessLayer.Validation;
 using SNSModels;
-using SNSDataAccessLayer;
 using SNSBusinessLayer.Interfaces;
 using SNSBusinessLayer.NotificationSenders;
+using SNSDataAccessLayer.Interfaces;
 using SimpleNotificationSystemBusinessLayer.NotificationSender;
-
 namespace SNSBusinessLayer.Services
 {
     public class NotificationService
     {
-        private readonly NotificationRepository repository;
+        private readonly INotificationRepository repository;
 
         private readonly UserValidation userValidator;
 
         private readonly NotificationValidation notificationValidator;
-        public NotificationService(NotificationRepository notificationRepository, UserValidation userValidation, NotificationValidation notificationValidation)
+        public NotificationService(INotificationRepository notificationRepository, UserValidation userValidation, NotificationValidation notificationValidation) // Changed to interface
         {
             repository = notificationRepository;
 
@@ -28,7 +27,7 @@ namespace SNSBusinessLayer.Services
             // Validate notification
 
             notificationValidator.ValidateMsg(notification);
-            INotificationSender sender = null;
+            INotificationSender? sender = null;
 
             // Email notification
 
@@ -47,17 +46,21 @@ namespace SNSBusinessLayer.Services
                 sender = new smsNotification();
             }
 
+            if (sender == null)
+                throw new InvalidOperationException("Unsupported notification type.");
+
             // Add sent date
 
-            notification.SentTime = DateTime.Now;
+
+            notification.SentTime = DateTime.UtcNow;
 
             // Send notification
 
             sender.Send(user, notification);
 
-            // Save notification
+            // Add notification
 
-            repository.SaveNotification(notification);
+            repository.AddNotification(notification); // Changed to AddNotification
 
             Console.WriteLine(
                 "Notification saved successfully."
