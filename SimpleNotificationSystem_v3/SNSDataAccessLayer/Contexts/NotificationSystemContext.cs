@@ -17,7 +17,7 @@ namespace SNSDataAccessLayer.Contexts
             modelBuilder.Entity<User>(u =>
             {
                 u.HasKey(u => u.Id).HasName("PK_UserId");
-                u.HasData(new User() { Id = 101, Name = "Krishna", Email = "krishna@gamil.com", PhoneNumber = "9998887776" });
+
             });
 
             modelBuilder.Entity<Notification>(n =>
